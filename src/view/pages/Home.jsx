@@ -1,12 +1,27 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
 import {WALLET_ADAPTERS} from "@web3auth/base";
 import useWeb3Auth from '../hooks/useWeb3Auth';
 import useFirebase from '../hooks/useFirebase';
 
 const Home = () => {
+  const [user, setUser] = useState(null)
   const web3Auth = useWeb3Auth()
   const firebaseApp = useFirebase()
+
+  useEffect(() => {
+    const run = async () => {
+      const _user = await web3Auth.getUserInfo()
+      setUser(_user)
+
+      console.log("User info >>>>>>>>>>>>>", _user)
+      console.log("Provider", web3Auth.provider)
+    }
+
+    run()
+    .then(() => {})
+    .catch(error => console.log(`[Error] ${error.message}`))
+  }, [web3Auth])
 
   const login = useCallback(async () => {
     if(web3Auth) {
@@ -33,9 +48,9 @@ const Home = () => {
         },
       });
 
-      const user = await web3Auth.getUserInfo()
-      console.log("User info", user)
-      console.log("Provider", web3Auth.provider)
+      const _user = await web3Auth.getUserInfo()
+      setUser(_user)
+      console.log("User info >>>>>>>>>>>>>", user)
     }
   }, [web3Auth])
 

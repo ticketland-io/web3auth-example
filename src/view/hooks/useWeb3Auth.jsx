@@ -23,13 +23,13 @@ export default () => {
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
           clientId: process.env.WEB3_AUTH_CLIENT_ID,
-          uxMode: "popup",
+          uxMode: "redirect",
           network: "testnet",
           loginConfig: {
             jwt: {
-              name: 'Custom Login',
               verifier: "tl-firebase-verifier",
               typeOfLogin: "jwt",
+              clientId: process.env.WEB3_AUTH_CLIENT_ID,
             },
           },
         },
