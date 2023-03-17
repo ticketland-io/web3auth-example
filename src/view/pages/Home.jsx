@@ -1,5 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
+import HDKey from 'hdkey'
+import bip39 from 'bip39'
 import {WALLET_ADAPTERS} from "@web3auth/base";
 import useWeb3Auth from '../hooks/useWeb3Auth';
 import useFirebase from '../hooks/useFirebase';
@@ -14,6 +16,20 @@ const Home = () => {
   useEffect(() => {
     const run = async () => {
       if(wallet) {
+        const privateKey = await web3Auth.provider.request({
+          method: "solanaPrivateKey",
+          params: {},
+        });
+        
+        // Create the HD wallet using the private from Torus as the seed
+        const seed = privateKey
+        const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'))
+        const childkey = hdkey.derive("m/44'/501'/0'/0'");
+
+        const mnemonic = bip39.entropyToMnemonic(seed)
+
+        console.log('>>>>>>>>>>> mnemonic', mnemonic)
+
         console.log(">>>>>>>>>>>>>>>> Account", await wallet.requestAccounts())
       }
     }

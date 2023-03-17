@@ -16,6 +16,7 @@ export default () => {
           chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
         },
+        sessionTime: 86400 * 7, // 7 days
         web3AuthNetwork: "testnet",
         useCoreKitKey: true,
       });
@@ -25,6 +26,7 @@ export default () => {
           clientId: process.env.WEB3_AUTH_CLIENT_ID,
           uxMode: "redirect",
           network: "testnet",
+          mfaLevel: 'mandatory',
           loginConfig: {
             jwt: {
               verifier: "tl-firebase-verifier",
