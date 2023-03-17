@@ -3,12 +3,25 @@ import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
 import {WALLET_ADAPTERS} from "@web3auth/base";
 import useWeb3Auth from '../hooks/useWeb3Auth';
 import useFirebase from '../hooks/useFirebase';
+import useWallet from '../hooks/useWallet';
 
 const Home = () => {
   const [user, setUser] = useState(null)
   const web3Auth = useWeb3Auth()
   const firebaseApp = useFirebase()
+  const wallet = useWallet(web3Auth)
 
+  useEffect(() => {
+    const run = async () => {
+      if(wallet) {
+        console.log(">>>>>>>>>>>>>>>> Account", await wallet.requestAccounts())
+      }
+    }
+    
+    run()
+    .then(() => {})
+    .catch(error => console.log(`[Error] ${error.message}`))
+  }, [wallet])
   useEffect(() => {
     const run = async () => {
       const _user = await web3Auth.getUserInfo()
