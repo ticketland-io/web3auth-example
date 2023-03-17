@@ -1,14 +1,14 @@
-import {useEffect, useState} from 'react';
-import {Web3Auth} from "@web3auth/modal";
+import {useEffect, useState} from 'react'
+import {Web3AuthNoModal} from "@web3auth/no-modal";
 import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
-import {CHAIN_NAMESPACES} from "@web3auth/base";
+import {CHAIN_NAMESPACES, ADAPTER_EVENTS} from "@web3auth/base"
 
 export default () => {
   const [web3Auth, setWeb3Auth] = useState(null)
 
   useEffect(() => {
     const run = async () => {
-      const _web3auth = new Web3Auth({
+      const _web3Auth = new Web3AuthNoModal({
         authMode: 'DAPP',
         clientId: process.env.WEB3_AUTH_CLIENT_ID,
         chainConfig: {
@@ -16,27 +16,44 @@ export default () => {
           chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
         },
-        web3AuthNetwork: "cyan",
-      })
+        web3AuthNetwork: "testnet",
+        useCoreKitKey: true,
+      });
 
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
-          uxMode: "popup",
+          clientId: process.env.WEB3_AUTH_CLIENT_ID,
+          uxMode: "redirect",
+          network: "testnet",
           loginConfig: {
-            google: {
-              verifier: "tl-google",
-              typeOfLogin: "google",
-              clientId: "538780875835-m8p3ooigmem22lcod7ija17lclms8i19.apps.googleusercontent.com",
+            jwt: {
+              verifier: "tl-firebase-verifier",
+              typeOfLogin: "jwt",
+              clientId: process.env.WEB3_AUTH_CLIENT_ID,
             },
           },
         },
       });
       
-      _web3auth.configureAdapter(openloginAdapter);
+      _web3Auth.configureAdapter(openloginAdapter);
   
-      await _web3auth.initModal()
+      await _web3Auth.init();
 
-      setWeb3Auth(_web3auth)
+
+      _web3Auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+        console.log("connecting");
+      });
+
+      _web3Auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+        console.log("disconnected");
+        setUser(null);
+      });
+
+      _web3Auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+        console.error("some error or user has cancelled login request", error);
+      });
+
+      setWeb3Auth(_web3Auth);
     }
 
     run()
