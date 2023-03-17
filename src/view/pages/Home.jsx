@@ -1,11 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import * as anchor from '@project-serum/anchor'
 import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
 import HDKey from 'hdkey'
-import bip39 from 'bip39'
+import * as bip39 from 'bip39'
 import {WALLET_ADAPTERS} from "@web3auth/base";
 import useWeb3Auth from '../hooks/useWeb3Auth';
 import useFirebase from '../hooks/useFirebase';
 import useWallet from '../hooks/useWallet';
+
+const {Keypair} = anchor.web3
 
 const Home = () => {
   const [user, setUser] = useState(null)
@@ -25,12 +28,11 @@ const Home = () => {
         const seed = privateKey
         const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'))
         const childkey = hdkey.derive("m/44'/501'/0'/0'");
+        const keypair = Keypair.fromSeed(childkey.privateKey)
+        console.log('>>>>>>>>>>> address', keypair.publicKey.toBase58())
 
-        const mnemonic = bip39.entropyToMnemonic(seed)
-
-        console.log('>>>>>>>>>>> mnemonic', mnemonic)
-
-        console.log(">>>>>>>>>>>>>>>> Account", await wallet.requestAccounts())
+        // We don't need this anymore since we will treat the pirvate key from torus as the seed for our mnemonic
+        // console.log(">>>>>>>>>>>>>>>> Account", await wallet.requestAccounts())
       }
     }
     
