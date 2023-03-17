@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Web3Auth} from "@web3auth/modal";
-import {CHAIN_NAMESPACES, SafeEventEmitterProvider} from "@web3auth/base"
+import {CHAIN_NAMESPACES} from "@web3auth/base"
 
 export default () => {
   const [web3Auth, setWeb3Auth] = useState(null)
@@ -8,6 +8,7 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const _web3auth = new Web3Auth({
+        authMode: 'DAPP',
         clientId: process.env.WEB3_AUTH_CLIENT_ID,
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.SOLANA,

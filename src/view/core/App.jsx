@@ -5,7 +5,6 @@ import Home from '../pages/Home'
 const App = () => {
   return (
     <div>
-      <Header />
       <Routes>
         <Route exact path='/' element={<Home />} />
         <Route
