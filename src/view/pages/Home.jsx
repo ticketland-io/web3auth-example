@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import * as anchor from '@project-serum/anchor'
 import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
 import HDKey from 'hdkey'
-import * as bip39 from 'bip39'
 import {WALLET_ADAPTERS} from "@web3auth/base";
 import useWeb3Auth from '../hooks/useWeb3Auth';
 import useFirebase from '../hooks/useFirebase';

@@ -12,7 +12,7 @@ export default defineConfig({
   },
   plugins: [
     nodePolyfills(),
-    basicSsl(),
+    // basicSsl(),
     react(),
     EnvironmentPlugin('all'),
   ],
