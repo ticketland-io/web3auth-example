@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react'
+import React, {useCallback} from 'react';
 import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
-import useWeb3Auth from '../hooks/useWeb3Auth'
-import useFirebase from '../hooks/useFirebase'
+import {WALLET_ADAPTERS} from "@web3auth/base";
+import useWeb3Auth from '../hooks/useWeb3Auth';
+import useFirebase from '../hooks/useFirebase';
 
 const Home = () => {
   const web3Auth = useWeb3Auth()
@@ -23,7 +24,7 @@ const Home = () => {
       const loginRes = await signInWithGoogle()
       const idToken = await loginRes.user.getIdToken(true)
 
-      await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      await web3Auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: idToken,
@@ -32,9 +33,9 @@ const Home = () => {
         },
       });
 
-      const user = await web3auth.getUserInfo()
+      const user = await web3Auth.getUserInfo()
       console.log("User info", user)
-      console.log("Provider", web3auth.provider)
+      console.log("Provider", web3Auth.provider)
     }
   }, [web3Auth])
 
