@@ -1,6 +1,7 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react';
 import {Web3Auth} from "@web3auth/modal";
-import {CHAIN_NAMESPACES} from "@web3auth/base"
+import {OpenloginAdapter} from "@web3auth/openlogin-adapter";
+import {CHAIN_NAMESPACES} from "@web3auth/base";
 
 export default () => {
   const [web3Auth, setWeb3Auth] = useState(null)
@@ -17,6 +18,21 @@ export default () => {
         },
         web3AuthNetwork: "cyan",
       })
+
+      const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          uxMode: "popup",
+          loginConfig: {
+            google: {
+              verifier: "tl-google",
+              typeOfLogin: "google",
+              clientId: "538780875835-m8p3ooigmem22lcod7ija17lclms8i19.apps.googleusercontent.com",
+            },
+          },
+        },
+      });
+      
+      _web3auth.configureAdapter(openloginAdapter);
   
       await _web3auth.initModal()
 
