@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Web3Auth} from "@web3auth/modal";
+import {Web3AuthNoModal} from "@web3auth/no-modal";
 import {CHAIN_NAMESPACES} from "@web3auth/base"
 
 export default () => {
@@ -7,7 +7,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const _web3auth = new Web3Auth({
+      const _web3auth = new Web3AuthNoModal({
         authMode: 'DAPP',
         clientId: process.env.WEB3_AUTH_CLIENT_ID,
         chainConfig: {
@@ -18,7 +18,7 @@ export default () => {
         web3AuthNetwork: "cyan",
       })
   
-      await _web3auth.initModal()
+      await _web3auth.init()
 
       setWeb3Auth(_web3auth)
     }
