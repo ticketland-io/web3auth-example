@@ -26,7 +26,6 @@ export default () => {
           clientId: process.env.WEB3_AUTH_CLIENT_ID,
           uxMode: "redirect",
           network: "testnet",
-          mfaLevel: 'mandatory',
           loginConfig: {
             jwt: {
               verifier: "tl-firebase-verifier",
@@ -35,12 +34,14 @@ export default () => {
             },
           },
         },
+        loginSettings: {
+          mfaLevel: 'mandatory',
+        }
       });
       
       _web3Auth.configureAdapter(openloginAdapter);
   
       await _web3Auth.init();
-
 
       _web3Auth.on(ADAPTER_EVENTS.CONNECTING, () => {
         console.log("connecting");

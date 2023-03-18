@@ -35,10 +35,11 @@ const Home = () => {
       }
     }
     
-    run()
-    .then(() => {})
-    .catch(error => console.log(`[Error] ${error.message}`))
+    // run()
+    // .then(() => {})
+    // .catch(error => console.log(`[Error] ${error.message}`))
   }, [wallet])
+  
   useEffect(() => {
     const run = async () => {
       const _user = await web3Auth.getUserInfo()
